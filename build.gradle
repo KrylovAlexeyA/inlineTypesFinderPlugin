@@ -1,54 +1,39 @@
 plugins {
     id 'java'
-    id 'org.jetbrains.intellij' version '0.4.16'
-}
-allprojects {
-    apply plugin: 'java'
-
-    sourceSets {
-        main {
-            java.srcDirs 'src', 'gen'
-            resources.srcDirs 'resources'
-        }
-        test {
-            java.srcDir 'tests'
-        }
-    }
-    apply plugin: 'idea'
-    idea.module {
-        generatedSourceDirs += file('gen')
-    }
-    apply plugin: 'org.jetbrains.intellij'
-    intellij {
-        version '0.4.16'
-        type 'IU'
-        plugins 'uml', 'java'
-        updateSinceUntilBuild false
-    }
-    buildSearchableOptions.enabled = false
+    id 'org.jetbrains.intellij' version '0.4.18'
 }
 
-group 'org.example'
-version '1.0-SNAPSHOT'
+group 'org.intellij.sdk'
+version '2.0.0'
 
-sourceCompatibility = 1.8
+
 
 repositories {
     mavenCentral()
 }
 
+test {
+    // Set idea.home.path to the absolute path to the intellij-community source
+    // on your local machine.
+    systemProperty "idea.home.path", "/Users/krylovalexey/IdeaProjects/intellij-community"
+}
+
 dependencies {
-    /*compile group: 'com.github.adedayo.intellij.sdk', name: 'java-analysis-api', version: '142.1'
-    compile group: 'com.github.adedayo.intellij.sdk', name: 'java-psi-impl', version: '142.1'*/
+    compileOnly 'org.projectlombok:lombok:1.18.12'
+    annotationProcessor 'org.projectlombok:lombok:1.18.12'
+
+    testCompileOnly 'org.projectlombok:lombok:1.18.12'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.12'
     testCompile group: 'junit', name: 'junit', version: '4.12'
 }
 
 // See https://github.com/JetBrains/gradle-intellij-plugin/
 intellij {
-    version '2019.3.3'
+    version '2020.1'
+    plugins 'java'
+    sameSinceUntilBuild = true
 }
+
 patchPluginXml {
-    changeNotes """
-      Add change notes here.<br>
-      <em>most HTML tags may be used</em>"""
+    version = project.version
 }

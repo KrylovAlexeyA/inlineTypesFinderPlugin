@@ -1,5 +1,5 @@
 <idea-plugin>
-    <id>org.example.inlineTypesFounderPlugin</id>
+    <id>org.example.inlineTypesFinderPlugin</id>
     <name>Plugin display name here</name>
     <vendor email="support@yourcompany.com" url="http://www.yourcompany.com">YourCompany</vendor>
 
@@ -14,6 +14,14 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <!-- Add your extensions here -->
+        <localInspection language="JAVA"
+                         displayName="@Data class is candidate for record/inline"
+                         groupPath="Java"
+                         groupBundle="messages.InspectionsBundle"
+                         groupKey="group.names.portability.issues"
+                         enabledByDefault="true"
+                         level="WARNING"
+                         implementationClass="inspections.DataLombokAnnotationInspection"/>
     </extensions>
 
     <actions>
