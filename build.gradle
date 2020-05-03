@@ -19,7 +19,7 @@ test {
 }
 
 dependencies {
-    compileOnly 'org.projectlombok:lombok:1.18.12'
+    compile 'org.projectlombok:lombok:1.18.12'
     annotationProcessor 'org.projectlombok:lombok:1.18.12'
 
     testCompileOnly 'org.projectlombok:lombok:1.18.12'
@@ -29,11 +29,17 @@ dependencies {
 
 // See https://github.com/JetBrains/gradle-intellij-plugin/
 intellij {
-    version '2020.1'
+    version '2019.3'
     plugins 'java'
-    sameSinceUntilBuild = true
+
 }
 
 patchPluginXml {
     version = project.version
+}
+
+jar {
+    doFirst {
+        from { configurations.runtime.collect { it.isDirectory() ? it : zipTree(it) } }
+    }
 }
