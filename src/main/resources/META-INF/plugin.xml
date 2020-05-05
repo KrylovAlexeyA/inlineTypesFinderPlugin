@@ -22,6 +22,14 @@
                          enabledByDefault="true"
                          level="WARNING"
                          implementationClass="inspections.DataLombokAnnotationInspection"/>
+        <localInspection language="JAVA"
+                         displayName="Absolutely final class is candidate for record/inline"
+                         groupPath="Java"
+                         groupBundle="messages.InspectionsBundle"
+                         groupKey="group.names.portability.issues"
+                         enabledByDefault="true"
+                         level="WARNING"
+                         implementationClass="inspections.AllElementsIsFinalinspection"/>
     </extensions>
 
     <actions>
