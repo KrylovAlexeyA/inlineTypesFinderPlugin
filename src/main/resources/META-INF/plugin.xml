@@ -15,13 +15,13 @@
     <extensions defaultExtensionNs="com.intellij">
         <!-- Add your extensions here -->
         <localInspection language="JAVA"
-                         displayName="@Data class is candidate for record/inline"
+                         displayName="@Data\@Value class is candidate for record/inline"
                          groupPath="Java"
                          groupBundle="messages.InspectionsBundle"
                          groupKey="group.names.portability.issues"
                          enabledByDefault="true"
                          level="WARNING"
-                         implementationClass="inspections.DataLombokAnnotationInspection"/>
+                         implementationClass="inspections.LombokAnnotationInspection"/>
         <localInspection language="JAVA"
                          displayName="Absolutely final class is candidate for record/inline"
                          groupPath="Java"
