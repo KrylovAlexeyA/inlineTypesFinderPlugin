@@ -14,7 +14,7 @@ public class ClassIsSynchronizedCheck {
     public boolean checkMethods(@NotNull PsiMethod[] methods) {
         if (methods.length > 0) {
             for (PsiMethod method : methods) {
-                if (method.hasModifierProperty(SYNCHRONIZED)) {
+                if (checkMethod(method)) {
                     return true;
                 }
             }
