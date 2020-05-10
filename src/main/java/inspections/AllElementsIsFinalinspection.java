@@ -13,7 +13,6 @@ public class AllElementsIsFinalinspection extends AbstractBaseJavaLocalInspectio
     private ClassIsSynchronizedCheck isSynchronizedCheck = new ClassIsSynchronizedCheck();
     private ClassIsFinalCheck isFinalCheck = new ClassIsFinalCheck();
 
-
     @Nullable
     public ProblemDescriptor[] checkClass(@NotNull PsiClass aClass, @NotNull InspectionManager manager, boolean isOnTheFly) {
         if (isFinalCheck.checkClass(aClass) && isFinalCheck.checkFields(aClass.getAllFields()) &&
