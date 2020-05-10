@@ -34,9 +34,3 @@ intellij {
 patchPluginXml {
     version = project.version
 }
-
-jar {
-    doFirst {
-        from { configurations.runtime.collect { it.isDirectory() ? it : zipTree(it) } }
-    }
-}
