@@ -4,10 +4,11 @@ import com.intellij.psi.PsiMethod;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 public class MethodsOfObjectCheck {
-    private final static List<String> objectMethods = Arrays.asList(
+    private final static Set<String> objectMethods = new HashSet<>(Arrays.asList(
             "getClass",
             "hashCode",
             "equals",
@@ -16,7 +17,7 @@ public class MethodsOfObjectCheck {
             "notify",
             "notifyAll",
             "wait",
-            "finalize");
+            "finalize"));
 
     public boolean checkMethods(@NotNull PsiMethod method) {
         return objectMethods.contains(method.getName());
