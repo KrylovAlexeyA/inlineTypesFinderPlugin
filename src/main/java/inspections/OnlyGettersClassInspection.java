@@ -8,6 +8,7 @@ import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiMethod;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import quickFixes.AddReplaceRecordFix;
 
 public class OnlyGettersClassInspection extends AbstractBaseJavaLocalInspectionTool {
 
@@ -19,7 +20,8 @@ public class OnlyGettersClassInspection extends AbstractBaseJavaLocalInspectionT
         if (checkMethods(aClass.getAllMethods()) && !isSynchronizedCheck.checkMethods(aClass.getAllMethods())) {
             PsiFile file = aClass.getContainingFile();
             ProblemsHolder holder = new ProblemsHolder(manager, file, isOnTheFly);
-            holder.registerProblem(aClass, "Class is candidate for record/inline", ProblemHighlightType.INFORMATION);
+            holder.registerProblem(aClass, "Class is candidate for record/inline",
+                    ProblemHighlightType.INFORMATION, new AddReplaceRecordFix(aClass));
             return holder.getResultsArray();
         }
         return ProblemDescriptor.EMPTY_ARRAY;
