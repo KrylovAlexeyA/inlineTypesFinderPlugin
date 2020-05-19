@@ -1,5 +1,7 @@
 package quickFixes;
 
+import com.intellij.codeInsight.intention.IntentionAction;
+import com.intellij.codeInsight.intention.QuickFixFactory;
 import com.intellij.codeInspection.LocalQuickFixOnPsiElement;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.*;
@@ -27,6 +29,10 @@ public class AddReplaceRecordFix extends LocalQuickFixOnPsiElement {
         PsiRecordHeader recordHeader = PsiElementFactory.getInstance(project).createRecordHeaderFromText(stringFields, aClass);
         record.getRecordHeader().replace(recordHeader);
         aClass.replace(record);
+        IntentionAction optimizeImportsFix = QuickFixFactory.getInstance().createOptimizeImportsFix(false);
+        if (optimizeImportsFix.isAvailable(project, null, file)) {
+            optimizeImportsFix.invoke(project, null, file);
+        }
     }
 
     @Override

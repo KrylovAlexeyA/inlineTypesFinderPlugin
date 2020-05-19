@@ -15,7 +15,6 @@ public class LombokAnnotationInspection extends AbstractBaseJavaLocalInspectionT
 
     @Nullable
     public ProblemDescriptor[] checkClass(@NotNull PsiClass aClass, @NotNull InspectionManager manager, boolean isOnTheFly) {
-        aClass.getProject();
         if (aClass.hasAnnotation(VALUE_ANNOTATION) && !isSynchronizedCheck.checkMethods(aClass.getAllMethods())) {
             PsiFile file = aClass.getContainingFile();
             ProblemsHolder holder = new ProblemsHolder(manager, file, isOnTheFly);
