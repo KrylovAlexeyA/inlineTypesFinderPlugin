@@ -7,7 +7,8 @@ import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiFile;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import quickFixes.AddReplaceRecordFix;
+import quickFixes.ReplaceWithInlineFix;
+import quickFixes.ReplaceWithRecordFix;
 
 public class AllElementsIsFinalinspection extends AbstractBaseJavaLocalInspectionTool {
 
@@ -21,7 +22,8 @@ public class AllElementsIsFinalinspection extends AbstractBaseJavaLocalInspectio
             PsiFile file = aClass.getContainingFile();
             ProblemsHolder holder = new ProblemsHolder(manager, file, isOnTheFly);
             holder.registerProblem(aClass, "Class is candidate for record/inline",
-                    ProblemHighlightType.INFORMATION, new AddReplaceRecordFix(aClass));
+                    ProblemHighlightType.INFORMATION,
+                    new ReplaceWithRecordFix(aClass), new ReplaceWithInlineFix(aClass));
             return holder.getResultsArray();
         }
         return ProblemDescriptor.EMPTY_ARRAY;

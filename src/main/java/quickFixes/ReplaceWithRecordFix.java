@@ -8,11 +8,11 @@ import com.intellij.psi.*;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
 
-public class AddReplaceRecordFix extends LocalQuickFixOnPsiElement {
+public class ReplaceWithRecordFix extends LocalQuickFixOnPsiElement {
     private final String FAMILY_NAME = "Replace this class with a record";
     private PsiClass aClass;
 
-    public AddReplaceRecordFix(@NotNull PsiClass aClass) {
+    public ReplaceWithRecordFix(@NotNull PsiClass aClass) {
         super(aClass);
         this.aClass = aClass;
     }
