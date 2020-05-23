@@ -10,7 +10,6 @@ import quickFixes.ReplaceWithInlineFix;
 import quickFixes.ReplaceWithRecordFix;
 
 public class LombokAnnotationInspection extends AbstractBaseJavaLocalInspectionTool {
-
     public final static String VALUE_ANNOTATION = "lombok.Value";
     private ClassIsSynchronizedCheck isSynchronizedCheck = new ClassIsSynchronizedCheck();
 

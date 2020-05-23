@@ -2,6 +2,7 @@ package inspections;
 
 import checks.ClassIsSynchronizedCheck;
 import checks.MethodsOfObjectCheck;
+import checks.NoModifiedFieldsCheck;
 import com.intellij.codeInspection.*;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiFile;
@@ -15,10 +16,13 @@ public class OnlyGettersClassInspection extends AbstractBaseJavaLocalInspectionT
 
     private MethodsOfObjectCheck inheritedFromObjectCheck = new MethodsOfObjectCheck();
     private ClassIsSynchronizedCheck isSynchronizedCheck = new ClassIsSynchronizedCheck();
+    private NoModifiedFieldsCheck noModifiedFieldsCheck = new NoModifiedFieldsCheck();
 
     @Nullable
     public ProblemDescriptor[] checkClass(@NotNull PsiClass aClass, @NotNull InspectionManager manager, boolean isOnTheFly) {
-        if (checkMethods(aClass.getAllMethods()) && !isSynchronizedCheck.checkMethods(aClass.getAllMethods())) {
+        if (checkMethods(aClass.getAllMethods()) &&
+                !isSynchronizedCheck.checkMethods(aClass.getAllMethods()) &&
+                noModifiedFieldsCheck.checkClass(aClass)) {
             PsiFile file = aClass.getContainingFile();
             ProblemsHolder holder = new ProblemsHolder(manager, file, isOnTheFly);
             holder.registerProblem(aClass, "Class is candidate for record/inline",
@@ -39,7 +43,9 @@ public class OnlyGettersClassInspection extends AbstractBaseJavaLocalInspectionT
                 i++;
             }
             if (!startsWithGet && !method.isConstructor()) {
-                if (inheritedFromObjectCheck.checkMethods(method)) continue;
+                if (inheritedFromObjectCheck.checkMethod(method)) {
+                    continue;
+                }
                 return false;
             }
         }

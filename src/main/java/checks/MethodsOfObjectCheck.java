@@ -17,7 +17,7 @@ public class MethodsOfObjectCheck {
             "wait",
             "finalize");
 
-    public boolean checkMethods(@NotNull PsiMethod method) {
+    public boolean checkMethod(@NotNull PsiMethod method) {
         return objectMethods.contains(method.getName());
     }
 }
