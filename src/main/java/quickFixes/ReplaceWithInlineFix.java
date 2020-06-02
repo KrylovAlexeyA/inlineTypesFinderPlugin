@@ -34,18 +34,18 @@ public class ReplaceWithInlineFix extends LocalQuickFixOnPsiElement {
 
     @Override
     public void invoke(@NotNull Project project, @NotNull PsiFile file, @NotNull PsiElement startElement, @NotNull PsiElement endElement) {
-        PsiFile containingFile  = aClass.getContainingFile();
+        PsiFile containingFile = aClass.getContainingFile();
         WriteCommandAction.runWriteCommandAction(project, FAMILY_NAME, null, () -> {
             aClass.getModifierList().addAnnotation(InlineAnnotation);
+            PsiAnnotation annotation = Objects.requireNonNull(aClass.getModifierList()).findAnnotation(VALUE_ANNOTATION);
+            if (annotation != null) {
+                annotation.delete();
+            }
+            IntentionAction optimizeImportsFix = QuickFixFactory.getInstance().createOptimizeImportsFix(false);
+            if (optimizeImportsFix.isAvailable(project, null, file)) {
+                optimizeImportsFix.invoke(project, null, file);
+            }
         }, containingFile);
-        PsiAnnotation annotation = Objects.requireNonNull(aClass.getModifierList()).findAnnotation(VALUE_ANNOTATION);
-        if (annotation != null){
-            annotation.delete();
-        }
-        IntentionAction optimizeImportsFix = QuickFixFactory.getInstance().createOptimizeImportsFix(false);
-        if (optimizeImportsFix.isAvailable(project, null, file)) {
-            optimizeImportsFix.invoke(project, null, file);
-        }
     }
 
     @Override

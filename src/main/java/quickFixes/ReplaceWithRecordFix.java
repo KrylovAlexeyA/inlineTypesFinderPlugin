@@ -3,6 +3,7 @@ package quickFixes;
 import com.intellij.codeInsight.intention.IntentionAction;
 import com.intellij.codeInsight.intention.QuickFixFactory;
 import com.intellij.codeInspection.LocalQuickFixOnPsiElement;
+import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.*;
 import org.jetbrains.annotations.Nls;
@@ -25,14 +26,18 @@ public class ReplaceWithRecordFix extends LocalQuickFixOnPsiElement {
     @Override
     public void invoke(@NotNull Project project, @NotNull PsiFile file, @NotNull PsiElement startElement, @NotNull PsiElement endElement) {
         String stringFields = concatenateFields(aClass.getFields());
+        PsiFile containingFile = aClass.getContainingFile();
         PsiClass record = PsiElementFactory.getInstance(project).createRecord(aClass.getName());
         PsiRecordHeader recordHeader = PsiElementFactory.getInstance(project).createRecordHeaderFromText(stringFields, aClass);
-        record.getRecordHeader().replace(recordHeader);
-        aClass.replace(record);
-        IntentionAction optimizeImportsFix = QuickFixFactory.getInstance().createOptimizeImportsFix(false);
-        if (optimizeImportsFix.isAvailable(project, null, file)) {
-            optimizeImportsFix.invoke(project, null, file);
-        }
+        WriteCommandAction.runWriteCommandAction(project, FAMILY_NAME, null, () -> {
+            record.getRecordHeader().replace(recordHeader);
+            aClass.replace(record);
+            IntentionAction optimizeImportsFix = QuickFixFactory.getInstance().createOptimizeImportsFix(false);
+            if (optimizeImportsFix.isAvailable(project, null, file)) {
+                optimizeImportsFix.invoke(project, null, file);
+            }
+
+        }, containingFile);
     }
 
     @Override
