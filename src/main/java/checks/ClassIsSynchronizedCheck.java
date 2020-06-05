@@ -1,6 +1,8 @@
 package checks;
 
-import com.intellij.psi.PsiMethod;
+import com.intellij.psi.*;
+import com.intellij.psi.search.searches.ReferencesSearch;
+import com.intellij.util.Query;
 import org.jetbrains.annotations.NotNull;
 
 import static com.intellij.psi.PsiModifier.SYNCHRONIZED;
@@ -29,4 +31,23 @@ public class ClassIsSynchronizedCheck {
                         method.getBody().getText().contains(SYNCHRONIZED));
     }
 
+    public boolean isBlockedBySynchronized(@NotNull PsiClass psiClass) {
+        Query<PsiReference> references = ReferencesSearch.search(psiClass);
+        if (!references.findAll().isEmpty()) {
+            for (PsiReference reference : references) {
+                PsiElement element = reference.getElement().getContext().getParent();
+                if (element instanceof PsiVariable) {
+                    System.out.println(element.toString());
+                    Query<PsiReference> variableRefs = ReferencesSearch.search(element);
+                    System.out.println(variableRefs.toString());
+                    for (PsiReference variableRef : variableRefs) {
+                        if (variableRef.getElement().getParent() instanceof PsiSynchronizedStatement) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        return false;
+    }
 }

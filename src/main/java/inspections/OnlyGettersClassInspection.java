@@ -22,7 +22,8 @@ public class OnlyGettersClassInspection extends AbstractBaseJavaLocalInspectionT
     public ProblemDescriptor[] checkClass(@NotNull PsiClass aClass, @NotNull InspectionManager manager, boolean isOnTheFly) {
         if (checkMethods(aClass.getAllMethods()) &&
                 !isSynchronizedCheck.checkMethods(aClass.getAllMethods()) &&
-                noModifiedFieldsCheck.checkClass(aClass)) {
+                noModifiedFieldsCheck.checkClass(aClass) &&
+                !isSynchronizedCheck.isBlockedBySynchronized(aClass)) {
             PsiFile file = aClass.getContainingFile();
             ProblemsHolder holder = new ProblemsHolder(manager, file, isOnTheFly);
             holder.registerProblem(aClass, "Class is candidate for record/inline",
