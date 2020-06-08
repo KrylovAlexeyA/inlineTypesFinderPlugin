@@ -29,7 +29,7 @@
                          groupKey="group.names.portability.issues"
                          enabledByDefault="true"
                          level="WARNING"
-                         implementationClass="inspections.AllElementsIsFinalinspection"/>
+                         implementationClass="inspections.AllElementsAreFinalinspection"/>
         <localInspection language="JAVA"
                          displayName="Only getters class is candidate for record/inline"
                          groupPath="Java"

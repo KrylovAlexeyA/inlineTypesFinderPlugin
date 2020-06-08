@@ -10,7 +10,7 @@ import org.jetbrains.annotations.Nullable;
 import quickFixes.ReplaceWithInlineFix;
 import quickFixes.ReplaceWithRecordFix;
 
-public class AllElementsIsFinalinspection extends AbstractBaseJavaLocalInspectionTool {
+public class AllElementsAreFinalinspection extends AbstractBaseJavaLocalInspectionTool {
 
     private ClassIsSynchronizedCheck isSynchronizedCheck = new ClassIsSynchronizedCheck();
     private ClassIsFinalCheck isFinalCheck = new ClassIsFinalCheck();
