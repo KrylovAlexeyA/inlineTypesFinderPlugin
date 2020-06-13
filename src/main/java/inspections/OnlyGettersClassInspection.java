@@ -1,6 +1,7 @@
 package inspections;
 
 import checks.ClassIsSynchronizedCheck;
+import checks.ClassUseIncompatibleMethodsCheck;
 import checks.MethodsOfObjectCheck;
 import checks.NoModifiedFieldsCheck;
 import com.intellij.codeInspection.*;
@@ -18,13 +19,15 @@ public class OnlyGettersClassInspection extends AbstractBaseJavaLocalInspectionT
     private MethodsOfObjectCheck inheritedFromObjectCheck = new MethodsOfObjectCheck();
     private ClassIsSynchronizedCheck isSynchronizedCheck = new ClassIsSynchronizedCheck();
     private NoModifiedFieldsCheck noModifiedFieldsCheck = new NoModifiedFieldsCheck();
+    private ClassUseIncompatibleMethodsCheck classUseIncompatibleMethodsCheck = new ClassUseIncompatibleMethodsCheck();
 
     @Nullable
     public ProblemDescriptor[] checkClass(@NotNull PsiClass aClass, @NotNull InspectionManager manager, boolean isOnTheFly) {
         if (checkMethods(aClass.getAllMethods()) &&
                 !isSynchronizedCheck.checkMethods(aClass.getAllMethods()) &&
                 noModifiedFieldsCheck.checkClass(aClass) &&
-                !isSynchronizedCheck.isBlockedBySynchronized(aClass)) {
+                !isSynchronizedCheck.isBlockedBySynchronized(aClass) &&
+                !classUseIncompatibleMethodsCheck.checkClass(aClass)) {
             PsiFile file = aClass.getContainingFile();
             ProblemsHolder holder = new ProblemsHolder(manager, file, isOnTheFly);
             holder.registerProblem(aClass, "Class is candidate for record/inline",
