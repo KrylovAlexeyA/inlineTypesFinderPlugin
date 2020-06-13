@@ -4,6 +4,7 @@ import checks.ClassIsSynchronizedCheck;
 import checks.MethodsOfObjectCheck;
 import checks.NoModifiedFieldsCheck;
 import com.intellij.codeInspection.*;
+import com.intellij.lang.jvm.JvmModifier;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiMethod;
@@ -35,8 +36,8 @@ public class OnlyGettersClassInspection extends AbstractBaseJavaLocalInspectionT
     }
 
     private boolean checkMethods(PsiMethod[] methods) {
-        long i = 0;
         if (methods.length == 0) return false;
+        long i = 0;
         for (PsiMethod method : methods) {
             boolean startsWithGet = false;
             if (method.getName().startsWith("get")) {
@@ -44,7 +45,7 @@ public class OnlyGettersClassInspection extends AbstractBaseJavaLocalInspectionT
                 i++;
             }
             if (!startsWithGet && !method.isConstructor()) {
-                if (inheritedFromObjectCheck.checkMethod(method)) {
+                if (inheritedFromObjectCheck.checkMethod(method) || method.hasModifier(JvmModifier.NATIVE)) {
                     continue;
                 }
                 return false;

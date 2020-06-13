@@ -37,9 +37,7 @@ public class ClassIsSynchronizedCheck {
             for (PsiReference reference : references) {
                 PsiElement element = reference.getElement().getContext().getParent();
                 if (element instanceof PsiVariable) {
-                    System.out.println(element.toString());
                     Query<PsiReference> variableRefs = ReferencesSearch.search(element);
-                    System.out.println(variableRefs.toString());
                     for (PsiReference variableRef : variableRefs) {
                         if (variableRef.getElement().getParent() instanceof PsiSynchronizedStatement) {
                             return true;
