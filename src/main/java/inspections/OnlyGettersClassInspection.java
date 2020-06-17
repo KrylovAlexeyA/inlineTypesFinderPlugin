@@ -31,7 +31,7 @@ public class OnlyGettersClassInspection extends AbstractBaseJavaLocalInspectionT
             PsiFile file = aClass.getContainingFile();
             ProblemsHolder holder = new ProblemsHolder(manager, file, isOnTheFly);
             holder.registerProblem(aClass, "Class is candidate for record/inline",
-                    ProblemHighlightType.INFORMATION,
+                    ProblemHighlightType.WARNING,
                     new ReplaceWithRecordFix(aClass), new ReplaceWithInlineFix(aClass));
             return holder.getResultsArray();
         }

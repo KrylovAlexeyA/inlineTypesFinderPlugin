@@ -17,7 +17,6 @@ public class AllElementsAreFinalinspection extends AbstractBaseJavaLocalInspecti
     private ClassIsFinalCheck isFinalCheck = new ClassIsFinalCheck();
     private ClassUseIncompatibleMethodsCheck classUseIncompatibleMethodsCheck = new ClassUseIncompatibleMethodsCheck();
 
-
     @Nullable
     public ProblemDescriptor[] checkClass(@NotNull PsiClass aClass, @NotNull InspectionManager manager, boolean isOnTheFly) {
         if (isFinalCheck.checkClass(aClass) &&
@@ -27,7 +26,7 @@ public class AllElementsAreFinalinspection extends AbstractBaseJavaLocalInspecti
             PsiFile file = aClass.getContainingFile();
             ProblemsHolder holder = new ProblemsHolder(manager, file, isOnTheFly);
             holder.registerProblem(aClass, "Class is candidate for record/inline",
-                    ProblemHighlightType.INFORMATION,
+                    ProblemHighlightType.WARNING,
                     new ReplaceWithRecordFix(aClass), new ReplaceWithInlineFix(aClass));
             return holder.getResultsArray();
         }
