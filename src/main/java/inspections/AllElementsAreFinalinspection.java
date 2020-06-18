@@ -6,6 +6,8 @@ import checks.ClassUseIncompatibleMethodsCheck;
 import com.intellij.codeInspection.*;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiFile;
+import export.ExportToTxtFileWriter;
+import export.ExportWriter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import quickFixes.ReplaceWithInlineFix;
@@ -16,6 +18,7 @@ public class AllElementsAreFinalinspection extends AbstractBaseJavaLocalInspecti
     private ClassIsSynchronizedCheck isSynchronizedCheck = new ClassIsSynchronizedCheck();
     private ClassIsFinalCheck isFinalCheck = new ClassIsFinalCheck();
     private ClassUseIncompatibleMethodsCheck classUseIncompatibleMethodsCheck = new ClassUseIncompatibleMethodsCheck();
+    private ExportWriter fileWriter = new ExportToTxtFileWriter();
 
     @Nullable
     public ProblemDescriptor[] checkClass(@NotNull PsiClass aClass, @NotNull InspectionManager manager, boolean isOnTheFly) {
@@ -23,6 +26,7 @@ public class AllElementsAreFinalinspection extends AbstractBaseJavaLocalInspecti
                 isFinalCheck.checkFields(aClass.getAllFields()) &&
                 !isSynchronizedCheck.checkMethods(aClass.getAllMethods()) &&
                 !classUseIncompatibleMethodsCheck.checkClass(aClass)) {
+            fileWriter.export(aClass.getName());
             PsiFile file = aClass.getContainingFile();
             ProblemsHolder holder = new ProblemsHolder(manager, file, isOnTheFly);
             holder.registerProblem(aClass, "Class is candidate for record/inline",
