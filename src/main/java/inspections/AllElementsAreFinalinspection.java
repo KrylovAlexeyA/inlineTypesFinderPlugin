@@ -18,7 +18,7 @@ public class AllElementsAreFinalinspection extends AbstractBaseJavaLocalInspecti
     private ClassIsSynchronizedCheck isSynchronizedCheck = new ClassIsSynchronizedCheck();
     private ClassIsFinalCheck isFinalCheck = new ClassIsFinalCheck();
     private ClassUseIncompatibleMethodsCheck classUseIncompatibleMethodsCheck = new ClassUseIncompatibleMethodsCheck();
-    private ExportWriter fileWriter = new ExportToTxtFileWriter();
+    private ExportWriter fileWriter;
 
     @Nullable
     public ProblemDescriptor[] checkClass(@NotNull PsiClass aClass, @NotNull InspectionManager manager, boolean isOnTheFly) {
@@ -26,6 +26,9 @@ public class AllElementsAreFinalinspection extends AbstractBaseJavaLocalInspecti
                 isFinalCheck.checkFields(aClass.getAllFields()) &&
                 !isSynchronizedCheck.checkMethods(aClass.getAllMethods()) &&
                 !classUseIncompatibleMethodsCheck.checkClass(aClass)) {
+            if (fileWriter == null) {
+                this.fileWriter = new ExportToTxtFileWriter(aClass.getProject().getBasePath());
+            }
             fileWriter.export(aClass.getName());
             PsiFile file = aClass.getContainingFile();
             ProblemsHolder holder = new ProblemsHolder(manager, file, isOnTheFly);

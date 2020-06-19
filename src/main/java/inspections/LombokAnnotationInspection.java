@@ -16,13 +16,16 @@ public class LombokAnnotationInspection extends AbstractBaseJavaLocalInspectionT
     public final static String VALUE_ANNOTATION = "lombok.Value";
     private ClassIsSynchronizedCheck isSynchronizedCheck = new ClassIsSynchronizedCheck();
     private ClassUseIncompatibleMethodsCheck classUseIncompatibleMethodsCheck = new ClassUseIncompatibleMethodsCheck();
-    private ExportWriter fileWriter = new ExportToTxtFileWriter();
+    private ExportWriter fileWriter;
 
     @Nullable
     public ProblemDescriptor[] checkClass(@NotNull PsiClass aClass, @NotNull InspectionManager manager, boolean isOnTheFly) {
         if (aClass.hasAnnotation(VALUE_ANNOTATION) &&
                 !isSynchronizedCheck.checkMethods(aClass.getAllMethods()) &&
                 !classUseIncompatibleMethodsCheck.checkClass(aClass)) {
+            if (fileWriter == null) {
+                this.fileWriter = new ExportToTxtFileWriter(aClass.getProject().getBasePath());
+            }
             fileWriter.export(aClass.getName());
             PsiFile file = aClass.getContainingFile();
             ProblemsHolder holder = new ProblemsHolder(manager, file, isOnTheFly);
