@@ -38,6 +38,7 @@
                          enabledByDefault="true"
                          level="WARNING"
                          implementationClass="inspections.OnlyGettersClassInspection"/>
+        <postStartupActivity implementation="startup.activity.WriteToFileStartupActivity"/>
     </extensions>
 
     <actions>

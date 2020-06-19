@@ -31,7 +31,6 @@ public class ReplaceWithInlineFix extends LocalQuickFixOnPsiElement {
         return FAMILY_NAME;
     }
 
-
     @Override
     public void invoke(@NotNull Project project, @NotNull PsiFile file, @NotNull PsiElement startElement, @NotNull PsiElement endElement) {
         PsiFile containingFile = aClass.getContainingFile();

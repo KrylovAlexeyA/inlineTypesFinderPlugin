@@ -12,6 +12,8 @@ import org.jetbrains.annotations.Nullable;
 import quickFixes.ReplaceWithInlineFix;
 import quickFixes.ReplaceWithRecordFix;
 
+import static startup.activity.WriteToFileStartupActivity.enableWrite;
+
 public class LombokAnnotationInspection extends AbstractBaseJavaLocalInspectionTool {
     public final static String VALUE_ANNOTATION = "lombok.Value";
     private ClassIsSynchronizedCheck isSynchronizedCheck = new ClassIsSynchronizedCheck();
@@ -23,8 +25,11 @@ public class LombokAnnotationInspection extends AbstractBaseJavaLocalInspectionT
         if (aClass.hasAnnotation(VALUE_ANNOTATION) &&
                 !isSynchronizedCheck.checkMethods(aClass.getAllMethods()) &&
                 !classUseIncompatibleMethodsCheck.checkClass(aClass)) {
-            if (fileWriter == null) {
-                this.fileWriter = new ExportToTxtFileWriter(aClass.getProject().getBasePath());
+            if (enableWrite == true) {
+                if (fileWriter == null) {
+                    this.fileWriter = new ExportToTxtFileWriter(aClass.getProject().getBasePath());
+                }
+                fileWriter.export(aClass.getName());
             }
             fileWriter.export(aClass.getName());
             PsiFile file = aClass.getContainingFile();

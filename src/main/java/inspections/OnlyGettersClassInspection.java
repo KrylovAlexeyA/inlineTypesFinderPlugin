@@ -16,6 +16,8 @@ import org.jetbrains.annotations.Nullable;
 import quickFixes.ReplaceWithInlineFix;
 import quickFixes.ReplaceWithRecordFix;
 
+import static startup.activity.WriteToFileStartupActivity.enableWrite;
+
 public class OnlyGettersClassInspection extends AbstractBaseJavaLocalInspectionTool {
 
     private MethodsOfObjectCheck inheritedFromObjectCheck = new MethodsOfObjectCheck();
@@ -31,10 +33,12 @@ public class OnlyGettersClassInspection extends AbstractBaseJavaLocalInspectionT
                 noModifiedFieldsCheck.checkClass(aClass) &&
                 !isSynchronizedCheck.isBlockedBySynchronized(aClass) &&
                 !classUseIncompatibleMethodsCheck.checkClass(aClass)) {
-            if (fileWriter == null) {
-                this.fileWriter = new ExportToTxtFileWriter(aClass.getProject().getBasePath());
+            if (enableWrite == true) {
+                if (fileWriter == null) {
+                    this.fileWriter = new ExportToTxtFileWriter(aClass.getProject().getBasePath());
+                }
+                fileWriter.export(aClass.getName());
             }
-            fileWriter.export(aClass.getName());
             PsiFile file = aClass.getContainingFile();
             ProblemsHolder holder = new ProblemsHolder(manager, file, isOnTheFly);
             holder.registerProblem(aClass, "Class is candidate for record/inline",

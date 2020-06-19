@@ -17,7 +17,7 @@ public class ExportToTxtFileWriter implements ExportWriter {
     public void export(String className) {
         try {
             Path path = Paths.get(pathString);
-            if (containsOne(className, Files.readAllLines(path))) {
+            if (Files.exists(path) && containsOne(className, Files.readAllLines(path))) {
                 return;
             }
             Files.write(path, (className + "\n").getBytes(),
