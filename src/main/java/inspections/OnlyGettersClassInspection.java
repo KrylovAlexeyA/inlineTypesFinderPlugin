@@ -36,7 +36,7 @@ public class OnlyGettersClassInspection extends AbstractBaseJavaLocalInspectionT
                 noModifiedFieldsCheck.checkClass(aClass) &&
                 !isSynchronizedCheck.isBlockedBySynchronized(aClass) &&
                 !classUseIncompatibleMethodsCheck.checkClass(aClass)) {
-            if (enableWrite == true) {
+            if (enableWrite) {
                 if (fileWriter == null) {
                     this.fileWriter = new ExportToTxtFileWriter(aClass.getProject().getBasePath());
                 }

@@ -55,7 +55,7 @@ public class WriteToFileStartupActivity implements StartupActivity {
         StatusBar statusBar = WindowManager.getInstance().getStatusBar(project);
         JBPopupFactory.getInstance()
                 .createHtmlTextBalloonBuilder(
-                        "Writing inline candidates to file annotation processing has been enabled",
+                        "Writing inline candidates to file has been enabled",
                         MessageType.INFO,
                         null
                 )

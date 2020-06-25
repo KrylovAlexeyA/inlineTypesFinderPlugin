@@ -32,7 +32,7 @@ public class AllElementsAreFinalinspection extends AbstractBaseJavaLocalInspecti
                 !isSynchronizedCheck.checkMethods(aClass.getAllMethods()) &&
                 !isSynchronizedCheck.isBlockedBySynchronized(aClass) &&
                 !classUseIncompatibleMethodsCheck.checkClass(aClass)) {
-            if (enableWrite == true) {
+            if (enableWrite) {
                 if (fileWriter == null) {
                     this.fileWriter = new ExportToTxtFileWriter(aClass.getProject().getBasePath());
                 }
