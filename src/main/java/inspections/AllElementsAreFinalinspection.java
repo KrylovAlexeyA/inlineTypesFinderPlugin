@@ -13,6 +13,7 @@ import org.jetbrains.annotations.Nullable;
 import quickFixes.ReplaceWithInlineFix;
 import quickFixes.ReplaceWithRecordFix;
 
+import static quickFixes.ReplaceWithInlineFix.InlineAnnotation;
 import static startup.activity.WriteToFileStartupActivity.enableWrite;
 
 public class AllElementsAreFinalinspection extends AbstractBaseJavaLocalInspectionTool {
@@ -24,9 +25,12 @@ public class AllElementsAreFinalinspection extends AbstractBaseJavaLocalInspecti
 
     @Nullable
     public ProblemDescriptor[] checkClass(@NotNull PsiClass aClass, @NotNull InspectionManager manager, boolean isOnTheFly) {
-        if (isFinalCheck.checkClass(aClass) &&
+        if (!aClass.isRecord() &&
+                !aClass.hasAnnotation(InlineAnnotation) &&
+                isFinalCheck.checkClass(aClass) &&
                 isFinalCheck.checkFields(aClass.getAllFields()) &&
                 !isSynchronizedCheck.checkMethods(aClass.getAllMethods()) &&
+                !isSynchronizedCheck.isBlockedBySynchronized(aClass) &&
                 !classUseIncompatibleMethodsCheck.checkClass(aClass)) {
             if (enableWrite == true) {
                 if (fileWriter == null) {

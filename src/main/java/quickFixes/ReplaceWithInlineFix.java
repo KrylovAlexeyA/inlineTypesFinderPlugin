@@ -17,8 +17,8 @@ import java.util.Objects;
 import static inspections.LombokAnnotationInspection.VALUE_ANNOTATION;
 
 public class ReplaceWithInlineFix extends LocalQuickFixOnPsiElement {
+    public static final String InlineAnnotation = "java.lang.__inline__";
     private final String FAMILY_NAME = "Replace this class with an inline";
-    private final String InlineAnnotation = "java.lang.__inline__";
     private PsiClass aClass;
 
     public ReplaceWithInlineFix(@NotNull PsiClass aClass) {

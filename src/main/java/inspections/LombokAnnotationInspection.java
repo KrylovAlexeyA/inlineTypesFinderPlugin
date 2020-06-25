@@ -12,6 +12,7 @@ import org.jetbrains.annotations.Nullable;
 import quickFixes.ReplaceWithInlineFix;
 import quickFixes.ReplaceWithRecordFix;
 
+import static quickFixes.ReplaceWithInlineFix.InlineAnnotation;
 import static startup.activity.WriteToFileStartupActivity.enableWrite;
 
 public class LombokAnnotationInspection extends AbstractBaseJavaLocalInspectionTool {
@@ -22,8 +23,11 @@ public class LombokAnnotationInspection extends AbstractBaseJavaLocalInspectionT
 
     @Nullable
     public ProblemDescriptor[] checkClass(@NotNull PsiClass aClass, @NotNull InspectionManager manager, boolean isOnTheFly) {
-        if (aClass.hasAnnotation(VALUE_ANNOTATION) &&
+        if (!aClass.isRecord() &&
+                !aClass.hasAnnotation(InlineAnnotation) &&
+                aClass.hasAnnotation(VALUE_ANNOTATION) &&
                 !isSynchronizedCheck.checkMethods(aClass.getAllMethods()) &&
+                !isSynchronizedCheck.isBlockedBySynchronized(aClass) &&
                 !classUseIncompatibleMethodsCheck.checkClass(aClass)) {
             if (enableWrite == true) {
                 if (fileWriter == null) {

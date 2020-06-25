@@ -16,6 +16,7 @@ import org.jetbrains.annotations.Nullable;
 import quickFixes.ReplaceWithInlineFix;
 import quickFixes.ReplaceWithRecordFix;
 
+import static quickFixes.ReplaceWithInlineFix.InlineAnnotation;
 import static startup.activity.WriteToFileStartupActivity.enableWrite;
 
 public class OnlyGettersClassInspection extends AbstractBaseJavaLocalInspectionTool {
@@ -28,7 +29,9 @@ public class OnlyGettersClassInspection extends AbstractBaseJavaLocalInspectionT
 
     @Nullable
     public ProblemDescriptor[] checkClass(@NotNull PsiClass aClass, @NotNull InspectionManager manager, boolean isOnTheFly) {
-        if (checkMethods(aClass.getAllMethods()) &&
+        if (!aClass.isRecord() &&
+                !aClass.hasAnnotation(InlineAnnotation) &&
+                checkMethods(aClass.getAllMethods()) &&
                 !isSynchronizedCheck.checkMethods(aClass.getAllMethods()) &&
                 noModifiedFieldsCheck.checkClass(aClass) &&
                 !isSynchronizedCheck.isBlockedBySynchronized(aClass) &&
